@@ -1,0 +1,30 @@
+<a href="/login">Already registered? Sign-In</a>
+
+<h1>Register</h1>
+
+<form action="/users" method="post">
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<label for="">First Name</label>
+<input type="text" name="first_name"></br>
+<label for="">Last Name</label>
+<input type="text" name="last_name"></br>
+<label for="">Phone Number</label>
+<input type="text" name="phone"></br>
+<label for="">Email</label>
+<input type="text" name="email"></br>
+<label for="">Address</label>
+<input type="text" name="address"></br>
+<label for="">Country</label>
+<input type="text" name="country"></br>
+<label for="">Suburb</label>
+<input type="text" name="suburb"></br>
+<label for="">Username</label>
+<input type="text" name="username"></br>
+<label for="">Password</label>
+<input type="password" name="password"></br>
+<label for="">Profile Picture</label>
+<input type="text" placeholder="Insert an Image" name="profile_pic"></br>
+<button>Register</button>
+
+</form>
+
