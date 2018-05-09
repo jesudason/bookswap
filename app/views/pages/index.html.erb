@@ -1,53 +1,93 @@
 <h1>Homepage</h1>
 <a href='/users/new'>Create new user</a>
 	
-<form class="search-form" action="/search" method="get">
+<form id="search-form" action="/search" method="get">
 	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-	<label>Search by title, author or genre:</label>
+		<select id="search-type">
+		    <option class="option" value="title-search">Title</option>
+		    <option class="option" value="author-search">Author</option>
+		    <option class="option" value="genre-search">Genre</option>
+		    <option class="option" value="isbn-search">ISBN</option>
+  		</select>
 	<input class="query-input" type="text" name="book-search">
-	<button></button>
+	<button>Search</button>
 </form>
 
 <div class="results"></div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script>
-	var $searchForm = $('.search-form');
+	// var searchType = 
+	var $searchForm = $('#search-form');
 	var $queryInput = $('.query-input');
 	var $resultsDiv = $('.results')
 
+	var urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+	$('#search-type').change(function(){
+		if ($(this).val() == 'author-search') {
+			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=authors:'
+		} else if ($(this).val() == 'genre-search') {
+			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=subject:'
+		} else if ($(this).val() == 'isbn-search') {
+			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
+		} else {
+			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
+		}
+	})
+
 	$searchForm.on('submit', function(event) {
 	event.preventDefault();
+	$resultsDiv.empty();
 
-	var options =  {
-		url: 'https://www.googleapis.com/books/v1/volumes?q='+ $queryInput.val() +'&key=AIzaSyCb3xZRndlaQt34LVdpUYU6nHwvNTfb4K0'		
+	/*
+		If items are in database,
+		display from database or still access from Google but just change buttons?
+	
+		Else, so as below
+	*/
+			
+	var options = {
+		url: urlprefix + $queryInput.val() +'&apikey=2f6435d9'
 	}
 
 	var showResults = function(res) {	
-		res.items.forEach(function(book) {
+		res.items.slice(0,20).forEach(function(book) {
+			var $form = $('<form>')
+				.attr('action', '/books/' + book.volumeInfo.title)
 			var $h3 = $('<h3>').addClass('title');
 			var $a = $('<a>')
-				.attr('target', '_blank')
-				.attr('href', '/books')
 				.text(book.volumeInfo.title);
 			$h3.append($a);
-			$resultsDiv.append($h3);
-			book.volumeInfo.authors.forEach(function(author) {
+			var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
+			$resultsDiv.append($h3).append($h5);
+			book.volumeInfo.authors && book.volumeInfo.authors.forEach(function(author) {
 				var $p = $('<p>').text("Written by: " + author);
 				$resultsDiv.append($p);
 			});
 			var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
-			console.log(book.volumeInfo.imageLinks.thumbnail)
 			var $img = $('<img >')
 				.attr('src', book.volumeInfo.imageLinks.thumbnail);
 			var $addToWishlist = $('<button>')
+				.attr('class', 'addToWishlist')
 				.text('add to wishlist');
-			$resultsDiv.append($p).append($img).append($addToWishlist);
-
-
+				$('.addToWishlist').on('click', function() {
+					console.log('test add to wishlist');
+				})
+			var $addToLibrary = $('<button>')
+				.attr('class', 'addToLibrary')
+				// .attr('target', '_blank')
+				// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
+				.text('add to Library');
+				$('.addToLibrary').on('click', function(event) {
+					console.log(event.currentTarget);
+				})				
+			$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
+			$resultsDiv.append($form)
 		});
 	}
 $.ajax(options).done(showResults);
 })
+
 
 </script>
