@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   post 'users/:id', to: 'users#show'
+  get '/users/index', to: 'pages#index'
 
   resources :wishlists
   resources :mybooks

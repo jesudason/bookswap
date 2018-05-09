@@ -1,8 +1,53 @@
 <h1>Homepage</h1>
 <a href='/users/new'>Create new user</a>
 	
-<form action="/search" method="get">
-	<label>Search:</label>
-	<input type="hidden" name="_method" value="delete">
-	<input type="text" name="book-search">
+<form class="search-form" action="/search" method="get">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<label>Search by title, author or genre:</label>
+	<input class="query-input" type="text" name="book-search">
+	<button></button>
 </form>
+
+<div class="results"></div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script>
+	var $searchForm = $('.search-form');
+	var $queryInput = $('.query-input');
+	var $resultsDiv = $('.results')
+
+	$searchForm.on('submit', function(event) {
+	event.preventDefault();
+
+	var options =  {
+		url: 'https://www.googleapis.com/books/v1/volumes?q='+ $queryInput.val() +'&key=AIzaSyCb3xZRndlaQt34LVdpUYU6nHwvNTfb4K0'		
+	}
+
+	var showResults = function(res) {	
+		res.items.forEach(function(book) {
+			var $h3 = $('<h3>').addClass('title');
+			var $a = $('<a>')
+				.attr('target', '_blank')
+				.attr('href', '/books')
+				.text(book.volumeInfo.title);
+			$h3.append($a);
+			$resultsDiv.append($h3);
+			book.volumeInfo.authors.forEach(function(author) {
+				var $p = $('<p>').text("Written by: " + author);
+				$resultsDiv.append($p);
+			});
+			var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
+			console.log(book.volumeInfo.imageLinks.thumbnail)
+			var $img = $('<img >')
+				.attr('src', book.volumeInfo.imageLinks.thumbnail);
+			var $addToWishlist = $('<button>')
+				.text('add to wishlist');
+			$resultsDiv.append($p).append($img).append($addToWishlist);
+
+
+		});
+	}
+$.ajax(options).done(showResults);
+})
+
+</script>
