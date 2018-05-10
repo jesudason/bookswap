@@ -4,4 +4,8 @@ class WishlistsController < ApplicationController
 
 	end
 
+	def show 
+		@my_wishlist = Wishlist.where(user_id: 25)
+	end
+
 end

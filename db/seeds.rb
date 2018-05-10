@@ -47,6 +47,12 @@ isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
     book = Book.new
     book.isbn_id = isbn_numbers.sample.gsub("\r", "").gsub("\n","")
     book.user_id = rand(User.first.id..User.last.id)
+    book.title = Faker::Hipster.sentence
+    book.author = Faker::Name.name 
+    book.plot = Faker::Lorem.paragraph
+    book.year = rand(1970..2018)
+    book.genre = ['science', 'Fiction', 'Non-Fiction', 'Drama', 'Horror', 'Young Adult', 'Romance', 'Comic Books', 'Batman Stories'].sample
+    # book.image_url = 'https://picsum.photos/100/100'
     book.save
 
 }
