@@ -43,7 +43,7 @@ aus_locations = File.read(Rails.root.join('db', 'aus_locations.csv')).split(/\r/
 isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
 
 
-100.times{
+5000.times{
     book = Book.new
     book.isbn_id = isbn_numbers.sample.gsub("\r", "").gsub("\n","")
     book.user_id = rand(User.first.id..User.last.id)
