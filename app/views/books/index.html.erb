@@ -1,18 +1,19 @@
 <div class="book-info">
-<h1 class="title">Title</h1>
-<p class="author">Author</p>
+<h1 class="title"></h1>
+<p class="author"></p>
 <%= 'ISBN: ' + @book.isbn_id %><br>
-<p class="year">Published Year</p>
-<img src="https://images.gr-assets.com/books/1378145309l/18271327.jpg">
+<p class="year"></p>
+<img class="poster" src="">
 <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore necessitatibus dolore impedit illum minus qui! Odit sequi ab hic reprehenderit deleniti, libero sint, error velit autem, obcaecati commodi voluptas iste?</p>
 </div>
 
 
+<h1 class="critic_reviews">Critic Reviews</h1>
 <div class="reviews">
-<h1>Critic Reviews</h1>
 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo fugiat explicabo cum praesentium vero architecto dicta, molestias libero asperiores magnam maiores quasi aut repellat eum deleniti consectetur sit sapiente recusandae.</p>
 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias quasi voluptates alias repellendus animi aperiam exercitationem ab, totam porro voluptatem, accusantium quos deserunt laboriosam soluta velit voluptate, nobis numquam nihil?</p>
 </div>
+<p class="rating"></p>
 
 <button>Borrow</button>
 <button>Add to Wishlist</button>
@@ -30,8 +31,11 @@ var showResults = function(res) {
     console.log(res.items[0].volumeInfo.authors)
     document.querySelector('.title').textContent = res.items[0].volumeInfo.title;
     console.log(res.items[0].volumeInfo.title)
-    document.querySelector('.author').textContent = res.items[0].volumeInfo.authors.join(' ');
+    document.querySelector('.author').textContent = res.items[0].volumeInfo.authors;
     document.querySelector('.year').textContent = res.items[0].volumeInfo.publishedDate;
+    document.querySelector('.description').textContent = res.items[0].volumeInfo.description;
+    document.querySelector('.poster').src = res.items[0].volumeInfo.imageLinks.thumbnail;
+
 
 }
 
@@ -43,6 +47,23 @@ var options = {
 
 var showResults = function(res) {
     console.log(res)
+    var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[0].snippet;
+    reviews = document.querySelector('.reviews').textContent = "sgfsgdfgdfsgsdfgsdfgdfgs"
+    console.log("dgdfgd" + res)
+    
+    for(var x = 0; x < res.book.critic_reviews.length; x++){
+        var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[x].snippet;
+        console.log(res.book.critic_reviews[x].snippet)
+    }
+
+    // for (var i = 0; i < reviews.length; i++) {
+    //     console.log(reviews[i].snippet)
+    //     return reviews[i].snippet.source;
+        
+    // } 
+    document.querySelector('.critic_reviews')
+    document.querySelector('.rating').textContent = "Star rating: " + res.book.critic_reviews[0].star_rating;
+    console.log(res.book.critic_reviews[0].star_rating)
 }
 
 $.ajax(options).done(showResults);
