@@ -1,0 +1,59 @@
+/* GOOGLE MAPS STYLING ************* */
+
+.info_content{
+    width: 500px;
+    /* border: 1px grey solid; */
+}
+
+.info_content p{
+
+}
+
+.info_content img{
+    padding-right: 20px;
+    width: 70px;
+    height: 70px;
+}
+
+.description{
+
+}
+
+.description a{
+    margin-top:50px;
+}
+
+.content_wrapper{
+    display: flex;
+    margin: auto;
+}
+
+.maps_btn {
+    margin-left: 10px;
+    padding-right: 10px;
+	background-color:#7892c2;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #4e6096;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #283966;
+}
+.maps_btn:hover {
+	background-color:#476e9e;
+}
+.maps_btn:active {
+	position:relative;
+	top:1px;
+}
+
+.btn_wrapper{
+    text-align: right;
+
+}

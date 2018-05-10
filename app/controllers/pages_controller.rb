@@ -7,11 +7,14 @@ class PagesController < ApplicationController
     def map_markers
 
         current_location = [User.first.latd.to_f , User.first.long.to_f]
-        search_radius_in_kms = 500
-        isbn_number = "978-1-60309-088-9"
+        search_radius_in_kms = 5000
+
+        isbn_number = "1250163307"
+        book_details = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
+        book_details.search(isbn_number, 5)
+        
         search_results = Book.where(isbn_id: isbn_number)
-        # book_details = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
-        # book_details.search(isbn_number)
+        
         
         @markers = []
 
@@ -25,13 +28,20 @@ class PagesController < ApplicationController
             distance_from_me = distance(current_location, book_location).to_i/1000
             
             if distance_from_me < search_radius_in_kms
-                book_search_results += [username, book_location[0], book_location[1], image, description]
+                book_search_results += [username, book_location[0], book_location[1], image, description, isbn_number]
                 @markers.push(book_search_results)
             end
         end
 
         render json: @markers
     end
+
+
+    def view_map
+        render :index
+    end
+
+
 
     def distance loc1, loc2
         rad_per_deg = Math::PI/180  # PI / 180
