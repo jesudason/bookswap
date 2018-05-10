@@ -29,10 +29,6 @@ class PagesController < ApplicationController
         render json: @markers
     end
 
-
-    def home
-    end
-
 end
 
 
