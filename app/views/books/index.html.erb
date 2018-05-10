@@ -48,16 +48,9 @@ var options = {
 
 var showResults = function(res) {
     var reviews = res.book.critic_reviews;
-    console.log('r', reviews)
-    
-    // document.querySelector('.reviews').textContent = reviews;
-    // reviews = document.querySelector('.reviews').textContent = "sgfsgdfgdfsgsdfgsdfgdfgs"
-    // console.log("dgdfgd" + res)
+    // console.log('r', reviews)
     
     for(var x = 0; x < reviews.length; x++) {
-        // var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[x].snippet;
-        // return reviews[x].snippet
-
         console.log(reviews[x].snippet)
         // make a p elem
         var $p = $('<p>')
@@ -66,12 +59,6 @@ var showResults = function(res) {
         $('.reviews').append( $p );
 
     }
-
-    // for (var i = 0; i < reviews.length; i++) {
-    //     console.log(reviews[i].snippet)
-    //     return reviews[i].snippet.source;
-        
-    // } 
     document.querySelector('.critic_reviews')
     document.querySelector('.rating').textContent = "Star rating: " + res.book.critic_reviews[0].star_rating;
     console.log(res.book.critic_reviews[0].star_rating)
