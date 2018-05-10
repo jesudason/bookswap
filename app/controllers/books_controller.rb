@@ -8,7 +8,8 @@ class BooksController < ApplicationController
 
     def list_of_books
     	@books = Book.where("#{params[:category]} = '#{params[:search]}'").limit(10)
-    	render json: @books
+        # @user = User.find_by(id: "#{params[:user_id]}")
+    	render json: @books, include: :user
     end
 
 end

@@ -4,8 +4,12 @@
 	<button class="dbBookSearch">Browse Available Books</button>
 	<br>
 	<!-- Add if logged in to this -->
-	<label>Add a book to your Library or Wishlist:</label>
-	<button class="googleBookSearch">Add a Book</button>
+	<% if logged_in? %>
+		<label>Add a book to your Library or Wishlist:</label>
+		<button class="googleBookSearch">Add a Book</button>
+	<% else %>	
+		<span>Login to add books to your library</span>
+	<% end %>
 </div>
 <form id="search-form" action="/search" method="get">
 	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -63,8 +67,9 @@
 					var $a = $('<a>')
 						.text(book.volumeInfo.title);
 					$h3.append($a);
+					console.log(book.volumeInfo)
 					var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
-					var $h4 = $('<h4>').text("Plot: " + book.volumeInfo.description);
+					var $h4 = $('<h4>').text(book.volumeInfo.description);
 					$resultsDiv.append($h3).append($h5).append($h4);
 					book.volumeInfo.authors && book.volumeInfo.authors.forEach(function(author) {
 						var $p = $('<p>').text("Written by: " + author);
@@ -112,23 +117,12 @@
 			} else {
 				$searchBy = 'title';
 			}
-		})
+		});
 		// Perform search with above search type
-		// $searchForm.on('submit', function(event) {
-		// 	var $books = '';
-		// 	event.preventDefault();
-		// 	$resultsDiv.empty();
-		// 	if ($searchBy = 'author') {
-		// 		console.log($queryInput.val());
-			
-		// 		console.log("<%= @books.first.title %>");
-		// 	}	
-		// });
 
 		$searchForm.on('submit', function(event) {
 			event.preventDefault();
 			$resultsDiv.empty();
-			
 			var options = {
 				url: '/api/books',
 				data: {
@@ -140,7 +134,6 @@
 			var showResults = function(res) {
 			
 				res.forEach(function(book) {
-					console.log(book.title);
 					var $form = $('<form>')
 						.attr('action', '/books/' + book.id)
 					var $h3 = $('<h3>').addClass('title');
@@ -149,38 +142,36 @@
 					$h3.append($a);
 					var $h5 = $('<h5>').text("ISBN_13: " + book.isbn_id);
 					var $p = $('<p>').text("Written by: " + book.author);
-					// var $img = $('<img >')
-					// 	.attr('src', book.img_url);
+					var $h4 = $('<h4>').text(book.plot);
+					var $img = $('<img >')
+						.attr('src', book.image_url);
+					var $reqToBorrow = $('<button>')
+						.attr('class', 'reqToBorrow')
+						.text('request to borrow');
 					$resultsDiv
 						.append($h3)
 						.append($h5)
 						.append($p)
-						// .append($img)
+						.append($h4)
+						.append($img)
+						.append($reqToBorrow)
+					<% if logged_in? %>
+					$('.reqToBorrow').on('click', function() {
+						$(location).attr('href', 'mailto:' + book.user.email + '?subject='
+                            + encodeURIComponent("Request to borrow " + book.title + " by " + book.author)
+                            + "&body=" 
+                            + encodeURIComponent("Hi " + book.user.first_name + ", I would love to borrow your copy of " + book.title + ". \n Let me know how you'd like to proceed. \n Regards, <%= current_user.first_name %>"));
+                           });
+					})
 
-					var $reqToBorrow = $('<button>')
-						.attr('class', 'reqToBorrow')
-						.text('request to borrow');
-				});
-				
+					<% end %>
+				}
 
-				// 		$('.addToWishlist').on('click', function() {
-				// 			console.log('test add to wishlist');
-				// 		})
-				// 	var $addToLibrary = $('<button>')
-				// 		.attr('class', 'addToLibrary')
-				// 		// .attr('target', '_blank')
-				// 		// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
-				// 		.text('add to Library');
-				// 		$('.addToLibrary').on('click', function(event) {
-				// 			console.log(event.currentTarget);
-				// 		})				
-				// 	$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
-				// 	$resultsDiv.append($form)
-				// });
-			}
 		$.ajax(options).done(showResults);
-		})
-	});
+			});
+
+		});
+		
 
 </script>
 
