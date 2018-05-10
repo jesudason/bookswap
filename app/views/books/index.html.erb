@@ -1,9 +1,10 @@
 <div class="book-info">
-<h1>Title</h1>
+<h1 class="title">Title</h1>
 <p class="author">Author</p>
 <%= 'ISBN: ' + @book.isbn_id %><br>
+<p class="year">Published Year</p>
 <img src="https://images.gr-assets.com/books/1378145309l/18271327.jpg">
-<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore necessitatibus dolore impedit illum minus qui! Odit sequi ab hic reprehenderit deleniti, libero sint, error velit autem, obcaecati commodi voluptas iste?</p>
+<p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore necessitatibus dolore impedit illum minus qui! Odit sequi ab hic reprehenderit deleniti, libero sint, error velit autem, obcaecati commodi voluptas iste?</p>
 </div>
 
 
@@ -25,15 +26,19 @@ var options =  {
 	}
 
 var showResults = function(res) {
-    // console.log(res)
+    console.log(res)
     console.log(res.items[0].volumeInfo.authors)
+    document.querySelector('.title').textContent = res.items[0].volumeInfo.title;
+    console.log(res.items[0].volumeInfo.title)
     document.querySelector('.author').textContent = res.items[0].volumeInfo.authors.join(' ');
+    document.querySelector('.year').textContent = res.items[0].volumeInfo.publishedDate;
+
 }
 
 $.ajax(options).done(showResults);
 
 var options = {
-    url: "http://idreambooks.com/api/books/reviews.json?q=<%= @book.isbn_id %>&key=30f1b909406671dd6bfb87471ad75eff8ca9bf3a"
+    url: "http://idreambooks.com/api/books/reviews.json?q=0062502182&key=30f1b909406671dd6bfb87471ad75eff8ca9bf3a"
 }
 
 var showResults = function(res) {
