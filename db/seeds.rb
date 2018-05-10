@@ -52,6 +52,7 @@ isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
     book.plot = Faker::Lorem.paragraph
     book.year = rand(1970..2018)
     book.genre = ['science', 'Fiction', 'Non-Fiction', 'Drama', 'Horror', 'Young Adult', 'Romance', 'Comic Books', 'Batman Stories'].sample
+
     book.image_url = 'https://picsum.photos/100/100'
     book.save
 
