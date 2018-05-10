@@ -14,3 +14,5 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+//= require jQuery
+//= require map_markers

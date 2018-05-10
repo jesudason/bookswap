@@ -15,8 +15,13 @@ User.destroy_all
 
 # require_relative 'ISBN_numbers'
 
+isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
+aus_locations = File.read(Rails.root.join('db', 'aus_locations.csv')).split(/\r/)
+
 
 20.times{
+    
+    location = aus_locations.sample.split(',')
     new_user = User.new
 
     new_user.first_name = Faker::Name.first_name
@@ -27,8 +32,10 @@ User.destroy_all
     new_user.username = Faker::Internet.user_name
     new_user.password_digest =  '$2a$10$TFBAh2DI6KNOomo9sHFTyOjSeKLp.kMWPjkZGl8G7mxdEnMg89iui'
     new_user.address = Faker::Address.street_address
-    new_user.suburb = Faker::Address.community
-    new_user.country = Faker::Address.country
+    new_user.suburb = location[3]
+    new_user.country = location[1]
+    new_user.long = location[6]
+    new_user.latd = location[5]
     new_user.save
 }
 
@@ -36,7 +43,7 @@ User.destroy_all
 isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
 
 
-100.times{
+5000.times{
     book = Book.new
     book.isbn_id = isbn_numbers.sample.gsub("\r", "").gsub("\n","")
     book.user_id = rand(User.first.id..User.last.id)
@@ -60,3 +67,32 @@ isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
     wishlist.user_id = rand(User.first.id..User.last.id)
     wishlist.save
 }
+
+
+def returnState(region)
+    state = ""
+    case region
+
+    when "1"
+        state = "ACT"
+    when "2"
+        state = "Sydney"
+    when "3"
+        state = "Northern Territory"
+    when "4"
+        state = "Queensland"
+    when "5 "
+        state = "South Australia"
+    when "6"
+        state = "Tasmania"
+    when "7"
+        state = "Victoria"
+    when "8"
+        state = "Western Australia"
+
+    else
+      state = "unknown"
+    end
+
+    return state
+end

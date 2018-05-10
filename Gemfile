@@ -55,4 +55,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 gem 'csv'
-
+gem 'google-api-client', '~> 0.11'
+gem 'google_book', '~> 0.3.18'
