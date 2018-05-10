@@ -1,13 +1,9 @@
 class BooksController < ApplicationController
 
     def index
-        @book = Book.first
+        
+        # @book = Book.first
+        @isbn = params[:isbn_id]
     end
-
-
-	def index
-			@book = Book.first
-	end
-
 
 end

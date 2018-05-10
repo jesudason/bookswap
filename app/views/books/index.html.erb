@@ -1,7 +1,7 @@
 <div class="book-info">
 <h1 class="title"></h1>
 <p class="author"></p>
-<%= 'ISBN: ' + @book.isbn_id %><br>
+<%= 'ISBN: ' + @isbn %><br>
 <p class="year"></p>
 <img class="poster" src="">
 <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore necessitatibus dolore impedit illum minus qui! Odit sequi ab hic reprehenderit deleniti, libero sint, error velit autem, obcaecati commodi voluptas iste?</p>
@@ -23,8 +23,10 @@
 <script>
 
 var options =  {
-		url: 'https://www.googleapis.com/books/v1/volumes?q=isbn:0062502182&key=AIzaSyCb3xZRndlaQt34LVdpUYU6nHwvNTfb4K0'		
+		url: 'https://www.googleapis.com/books/v1/volumes?q=isbn:<%= @isbn %>&key=AIzaSyCb3xZRndlaQt34LVdpUYU6nHwvNTfb4K0'
 	}
+
+        console.log(options)		
 
 var showResults = function(res) {
     console.log(res)
