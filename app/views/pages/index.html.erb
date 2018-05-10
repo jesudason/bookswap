@@ -1,15 +1,14 @@
 
 <div>
-	<label>See what books are available to borrow:</label>
-	<button class="dbBookSearch">Browse Available Books</button>
-	<br>
-	<!-- Add if logged in to this -->
 	<% if logged_in? %>
 		<label>Add a book to your Library or Wishlist:</label>
 		<button class="googleBookSearch">Add a Book</button>
 	<% else %>	
 		<span>Login to add books to your library</span>
 	<% end %>
+	<br>
+	<label>See what books are available to borrow:</label>
+	<button class="dbBookSearch">Browse Available Books</button>
 </div>
 <form id="search-form" action="/search" method="get">
 	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
