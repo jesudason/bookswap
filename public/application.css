@@ -22,16 +22,11 @@ font-family: 'Oswald', sans-serif; */
 
 nav{
     height: 123px;
-    margin: 0px 0px;
     background-color: mistyrose;
-    background-image: url('images/nav_background.jpg');
-    display: flex;
+    background-image: url(images/nav_background.jpg);
  }
 
- .nav_buttons{
-     text-align: right;
- }
-  nav a{
+ nav a{
     font-family: 'Anton', sans-serif;
     font-size: 15px;
     -webkit-box-shadow: 11px 11px 45px 0px rgba(0,0,0,0.39);

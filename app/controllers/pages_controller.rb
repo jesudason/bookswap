@@ -6,8 +6,8 @@ class PagesController < ApplicationController
         search_radius_in_kms = 5000
 
         isbn_number = "1250163307"
-        book_details = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
-        book_details.search(isbn_number, 5)
+        # google_api_search = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
+        book_details = google_api_search.search(isbn_number, 5)
         
         search_results = Book.where(isbn_id: isbn_number)
         
@@ -55,4 +55,9 @@ class PagesController < ApplicationController
     
         rm * c # Delta in meters
     end
+
+
+    def style
+    end
+    
 end
