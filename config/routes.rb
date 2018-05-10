@@ -20,6 +20,6 @@ Rails.application.routes.draw do
   get '/login', to: 'session#new'
   post '/session', to: 'session#create'
   delete '/session', to: 'session#destroy'
-
+  get '/api/books', to: 'books#list_of_books'
 
 end

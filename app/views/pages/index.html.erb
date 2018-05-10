@@ -64,7 +64,8 @@
 						.text(book.volumeInfo.title);
 					$h3.append($a);
 					var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
-					$resultsDiv.append($h3).append($h5);
+					var $h4 = $('<h4>').text("Plot: " + book.volumeInfo.description);
+					$resultsDiv.append($h3).append($h5).append($h4);
 					book.volumeInfo.authors && book.volumeInfo.authors.forEach(function(author) {
 						var $p = $('<p>').text("Written by: " + author);
 						$resultsDiv.append($p);
@@ -100,7 +101,7 @@
 		document.getElementById("search-form").style.display="";
 		$queryInput.attr('placeholder', "Search Books to Borrow")
 		// Select search type
-		var $searchBy = ''
+		var $searchBy = 'title'
 		$('#search-type').change(function(){
 			if ($(this).val() == 'author-search') {
 				$searchBy = 'author';
@@ -113,17 +114,72 @@
 			}
 		})
 		// Perform search with above search type
+		// $searchForm.on('submit', function(event) {
+		// 	var $books = '';
+		// 	event.preventDefault();
+		// 	$resultsDiv.empty();
+		// 	if ($searchBy = 'author') {
+		// 		console.log($queryInput.val());
+			
+		// 		console.log("<%= @books.first.title %>");
+		// 	}	
+		// });
+
 		$searchForm.on('submit', function(event) {
-			var $books = '';
 			event.preventDefault();
 			$resultsDiv.empty();
-			if ($searchBy = 'author') {
-				console.log($queryInput.val());
-				$queryInput.val() && <% @books = Book.where( author: "%> + $queryInput.val() + <% ")  %>
-				<% @books = Book.where( author: "Roald Dahl")  %>
-				console.log("<%= @books.first.title %>");
-			}	
-		});
+			
+			var options = {
+				url: '/api/books',
+				data: {
+					category: $searchBy,
+					search: $queryInput.val()
+				}
+			}
+
+			var showResults = function(res) {
+			
+				res.forEach(function(book) {
+					console.log(book.title);
+					var $form = $('<form>')
+						.attr('action', '/books/' + book.id)
+					var $h3 = $('<h3>').addClass('title');
+					var $a = $('<a>')
+						.text(book.title);
+					$h3.append($a);
+					var $h5 = $('<h5>').text("ISBN_13: " + book.isbn_id);
+					var $p = $('<p>').text("Written by: " + book.author);
+					// var $img = $('<img >')
+					// 	.attr('src', book.img_url);
+					$resultsDiv
+						.append($h3)
+						.append($h5)
+						.append($p)
+						// .append($img)
+
+					var $reqToBorrow = $('<button>')
+						.attr('class', 'reqToBorrow')
+						.text('request to borrow');
+				});
+				
+
+				// 		$('.addToWishlist').on('click', function() {
+				// 			console.log('test add to wishlist');
+				// 		})
+				// 	var $addToLibrary = $('<button>')
+				// 		.attr('class', 'addToLibrary')
+				// 		// .attr('target', '_blank')
+				// 		// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
+				// 		.text('add to Library');
+				// 		$('.addToLibrary').on('click', function(event) {
+				// 			console.log(event.currentTarget);
+				// 		})				
+				// 	$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
+				// 	$resultsDiv.append($form)
+				// });
+			}
+		$.ajax(options).done(showResults);
+		})
 	});
 
 </script>
