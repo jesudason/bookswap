@@ -10,8 +10,7 @@
 
 <h1 class="critic_reviews">Critic Reviews</h1>
 <div class="reviews">
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo fugiat explicabo cum praesentium vero architecto dicta, molestias libero asperiores magnam maiores quasi aut repellat eum deleniti consectetur sit sapiente recusandae.</p>
-<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias quasi voluptates alias repellendus animi aperiam exercitationem ab, totam porro voluptatem, accusantium quos deserunt laboriosam soluta velit voluptate, nobis numquam nihil?</p>
+
 </div>
 <p class="rating"></p>
 
@@ -46,14 +45,24 @@ var options = {
 }
 
 var showResults = function(res) {
-    console.log(res)
-    var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[0].snippet;
-    reviews = document.querySelector('.reviews').textContent = "sgfsgdfgdfsgsdfgsdfgdfgs"
-    console.log("dgdfgd" + res)
+    var reviews = res.book.critic_reviews;
+    console.log('r', reviews)
     
-    for(var x = 0; x < res.book.critic_reviews.length; x++){
-        var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[x].snippet;
-        console.log(res.book.critic_reviews[x].snippet)
+    // document.querySelector('.reviews').textContent = reviews;
+    // reviews = document.querySelector('.reviews').textContent = "sgfsgdfgdfsgsdfgsdfgdfgs"
+    // console.log("dgdfgd" + res)
+    
+    for(var x = 0; x < reviews.length; x++) {
+        // var reviews = document.querySelector('.reviews').textContent = res.book.critic_reviews[x].snippet;
+        // return reviews[x].snippet
+
+        console.log(reviews[x].snippet)
+        // make a p elem
+        var $p = $('<p>')
+        $p.text(reviews[x].snippet) // text() is textContent =
+        // append $p to which .reviews
+        $('.reviews').append( $p );
+
     }
 
     // for (var i = 0; i < reviews.length; i++) {
