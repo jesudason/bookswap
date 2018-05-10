@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   post '/session', to: 'session#create'
   delete '/session', to: 'session#destroy'
   get '/api/mapmarkers', to: 'pages#map_markers'
+  get '/viewmaps', to: 'pages#view_map'
+  get '/style', to: 'pages#style'
+
   get '/login', to: 'session#new'
   post '/session', to: 'session#create'
   delete '/session', to: 'session#destroy'

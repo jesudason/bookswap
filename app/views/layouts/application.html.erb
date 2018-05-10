@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bookswap</title>
+    <title>Book Swap</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -12,32 +12,38 @@
   </head>
 
   <body>
- <div>
-  <h1>Book Swap</h1>
-  <a href="/">home</a>
-  <% if logged_in? %>
-    <a href="/wishlists/<%= current_user.id %>/">Wishlist</a>
-    <a href="/mybooks/<%= current_user.id %>">My Library</a>
-    <form action="/session" method="post">
-      <input type="hidden" name="_method" value="delete">
-      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <button>logout</button>
-    </form>
-    <p>Welcome, <%= current_user.first_name %></p>
-  <% else %>
-    <form action="/session" method="post">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <label for="">email</label>
-      <input type="text" name="email">
-      <label for="">password</label>
-      <input type="password" name="password">
-      <button>login</button>
-    </form>
-      <a href="/users/new">Sign Up</a>
-  <% end %>
-  </div>
-
-
+      
+    <nav>
+      <div class="title">
+        <a href="/" id="book_swap_header">THE BOOK SWAP</a>
+      </div>
+      
+      <div class="nav_buttons">
+      
+        <% if logged_in? %>
+          <a href="/wishlists/<%= current_user.id %>/">Wishlist</a>
+          <a href="/mybooks/<%= current_user.id %>">My Library</a>
+          <form action="/session" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <button>logout</button>
+          </form>
+        
+          <p>Welcome, <%= current_user.first_name %></p>
+      
+      <% else %>
+        <form action="/session" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <label for="">email</label>
+          <input type="text" name="email">
+          <label for="">password</label>
+          <input type="password" name="password">
+          <button>login</button>
+        </form>
+          <a href="/users/new">Register</a>
+      <% end %>
+    </div>  
+    </nav>
 
     <%= yield %>
     
