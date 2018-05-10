@@ -1,5 +1,9 @@
 class PagesController < ApplicationController
 
+    def index
+        @books = Book.all
+    end
+
     def map_markers
 
         current_location = [User.first.latd.to_f , User.first.long.to_f]

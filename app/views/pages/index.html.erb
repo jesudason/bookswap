@@ -1,8 +1,15 @@
+
 <div>
-	<button class="borrowBook">Borrow a Book</button>
-	<button class="borrowBook">Lend a Book</button>
+	<% if logged_in? %>
+		<label>Add a book to your Library or Wishlist:</label>
+		<button class="googleBookSearch">Add a Book</button>
+	<% else %>	
+		<span>Login to add books to your library</span>
+	<% end %>
+	<br>
+	<label>See what books are available to borrow:</label>
+	<button class="dbBookSearch">Browse Available Books</button>
 </div>
-	
 <form id="search-form" action="/search" method="get">
 	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 		<select id="search-type">
@@ -22,72 +29,148 @@
 	var $queryInput = $('.query-input');
 	var $resultsDiv = $('.results')
 
-	var urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
+	// Search hidden so user cannot search without stating if searching DB or Google
+	document.getElementById("search-form").style.display="none";
 
-	$('#search-type').change(function(){
-		if ($(this).val() == 'author-search') {
-			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=authors:'
-		} else if ($(this).val() == 'genre-search') {
-			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=subject:'
-		} else if ($(this).val() == 'isbn-search') {
-			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
-		} else {
-			urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
-		}
+	// googleBookSearch returns results from Google and gives the option to add to Database 
+	$('.googleBookSearch').on('click', function() {
+		document.getElementById("search-form").style.display="";
+		$queryInput.attr('placeholder', "Search Books to Add")
+		var urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+		$('#search-type').change(function(){
+			if ($(this).val() == 'author-search') {
+				urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=authors:'
+			} else if ($(this).val() == 'genre-search') {
+				urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=subject:'
+			} else if ($(this).val() == 'isbn-search') {
+				urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
+			} else {
+				urlprefix = 'https://www.googleapis.com/books/v1/volumes?q=';
+			}
+		})
+
+			$searchForm.on('submit', function(event) {
+			event.preventDefault();
+			$resultsDiv.empty();
+			
+			var options = {
+				url: urlprefix + $queryInput.val() +'&apikey=2f6435d9'
+			}
+
+			var showResults = function(res) {	
+				res.items.slice(0,20).forEach(function(book) {
+					var $form = $('<form>')
+						.attr('action', '/books/' + book.volumeInfo.title)
+					var $h3 = $('<h3>').addClass('title');
+					var $a = $('<a>')
+						.text(book.volumeInfo.title);
+					$h3.append($a);
+					console.log(book.volumeInfo)
+					var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
+					var $h4 = $('<h4>').text(book.volumeInfo.description);
+					$resultsDiv.append($h3).append($h5).append($h4);
+					book.volumeInfo.authors && book.volumeInfo.authors.forEach(function(author) {
+						var $p = $('<p>').text("Written by: " + author);
+						$resultsDiv.append($p);
+					});
+					var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
+					var $img = $('<img >')
+						.attr('src', book.volumeInfo.imageLinks.thumbnail);
+					var $addToWishlist = $('<button>')
+						.attr('class', 'addToWishlist')
+						.text('add to wishlist');
+						$('.addToWishlist').on('click', function() {
+							console.log('test add to wishlist');
+						})
+					var $addToLibrary = $('<button>')
+						.attr('class', 'addToLibrary')
+						// .attr('target', '_blank')
+						// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
+						.text('add to Library');
+						$('.addToLibrary').on('click', function(event) {
+							console.log(event.currentTarget);
+						})				
+					$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
+					$resultsDiv.append($form)
+				});
+			}
+		$.ajax(options).done(showResults);
+		})
 	})
 
-	$searchForm.on('submit', function(event) {
-	event.preventDefault();
-	$resultsDiv.empty();
-
-	/*
-		If items are in database,
-		display from database or still access from Google but just change buttons?
-	
-		Else, so as below
-	*/
-			
-	var options = {
-		url: urlprefix + $queryInput.val() +'&apikey=2f6435d9'
-	}
-
-	var showResults = function(res) {	
-		res.items.slice(0,20).forEach(function(book) {
-			var $form = $('<form>')
-				.attr('action', '/books/' + book.volumeInfo.title)
-			var $h3 = $('<h3>').addClass('title');
-			var $a = $('<a>')
-				.text(book.volumeInfo.title);
-			$h3.append($a);
-			var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
-			$resultsDiv.append($h3).append($h5);
-			book.volumeInfo.authors && book.volumeInfo.authors.forEach(function(author) {
-				var $p = $('<p>').text("Written by: " + author);
-				$resultsDiv.append($p);
-			});
-			var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
-			var $img = $('<img >')
-				.attr('src', book.volumeInfo.imageLinks.thumbnail);
-			var $addToWishlist = $('<button>')
-				.attr('class', 'addToWishlist')
-				.text('add to wishlist');
-				$('.addToWishlist').on('click', function() {
-					console.log('test add to wishlist');
-				})
-			var $addToLibrary = $('<button>')
-				.attr('class', 'addToLibrary')
-				// .attr('target', '_blank')
-				// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
-				.text('add to Library');
-				$('.addToLibrary').on('click', function(event) {
-					console.log(event.currentTarget);
-				})				
-			$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
-			$resultsDiv.append($form)
+	// dbBookSearch returns books from the database, with a button to borrow.
+	$('.dbBookSearch').on('click', function() {
+		// display search bar
+		document.getElementById("search-form").style.display="";
+		$queryInput.attr('placeholder', "Search Books to Borrow")
+		// Select search type
+		var $searchBy = 'title'
+		$('#search-type').change(function(){
+			if ($(this).val() == 'author-search') {
+				$searchBy = 'author';
+			} else if ($(this).val() == 'genre-search') {
+				$searchBy = 'genre';
+			} else if ($(this).val() == 'isbn-search') {
+				$searchBy = 'isbn';
+			} else {
+				$searchBy = 'title';
+			}
 		});
-	}
-$.ajax(options).done(showResults);
-})
+		// Perform search with above search type
+
+		$searchForm.on('submit', function(event) {
+			event.preventDefault();
+			$resultsDiv.empty();
+			var options = {
+				url: '/api/books',
+				data: {
+					category: $searchBy,
+					search: $queryInput.val()
+				}
+			}
+
+			var showResults = function(res) {
+			
+				res.forEach(function(book) {
+					var $form = $('<form>')
+						.attr('action', '/books/' + book.id)
+					var $h3 = $('<h3>').addClass('title');
+					var $a = $('<a>')
+						.text(book.title);
+					$h3.append($a);
+					var $h5 = $('<h5>').text("ISBN_13: " + book.isbn_id);
+					var $p = $('<p>').text("Written by: " + book.author);
+					var $h4 = $('<h4>').text(book.plot);
+					var $img = $('<img >')
+						.attr('src', book.image_url);
+					var $reqToBorrow = $('<button>')
+						.attr('class', 'reqToBorrow')
+						.text('request to borrow');
+					$resultsDiv
+						.append($h3)
+						.append($h5)
+						.append($p)
+						.append($h4)
+						.append($img)
+						.append($reqToBorrow)
+					<% if logged_in? %>
+					$('.reqToBorrow').on('click', function() {
+						$(location).attr('href', 'mailto:' + book.user.email + '?subject='
+                            + encodeURIComponent("Request to borrow " + book.title + " by " + book.author)
+                            + "&body=" 
+                            + encodeURIComponent("Hi " + book.user.first_name + ", I would love to borrow your copy of " + book.title + ". \n Let me know how you'd like to proceed. \n Regards, <%= current_user.first_name %>"));
+                           });
+					})
+
+					<% end %>
+				}
+
+		$.ajax(options).done(showResults);
+			});
+
+		});
+		
 
 </script>
 
