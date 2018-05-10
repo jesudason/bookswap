@@ -62,11 +62,17 @@ function infoWindowContent(marker){
    
     var content =  
     '<div class="info_content">' +
-    '<h3>'+ marker[0] +'</h3>' +
-    '<img src="'+ marker[3] +'">' +
-    '<p>'+ marker[4] +'</p>' + 
-    '<p><button>Borrow</button></p>' + 
-    '<p><button>Wishlist</button></p>' + 
+        '<h3>'+ marker[0] +'</h3>' +
+        '<div class="content_wrapper">' +
+            '<img src="'+ marker[3] +'">' +
+            '<p class="description">'+ marker[4] + '<br><a href="/books?isbn_id=' + marker[5]+ '">More...</a>' +'</p>' + 
+        '</div>' +
+        '<div class="btn_wrapper">' +
+            '<button class="maps_btn">Borrow</button>' + 
+            '<button class="maps_btn">Wishlist</button>' + 
+        '</div>' +
+
+
     '</div>'
 
     return content
