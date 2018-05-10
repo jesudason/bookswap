@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  post 'users/:id', to: 'users#show'
+  get '/users/index', to: 'pages#index'
+
   resources :wishlists
   resources :mybooks
   resources :books
@@ -8,5 +12,9 @@ Rails.application.routes.draw do
 
   get '/', to: 'pages#index'
   get '/api/mapmarkers', to: 'pages#map_markers'
+  get '/login', to: 'session#new'
+  post '/session', to: 'session#create'
+  delete '/session', to: 'session#destroy'
+
 
 end

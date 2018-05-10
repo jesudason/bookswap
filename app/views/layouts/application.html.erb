@@ -14,29 +14,32 @@
   <body>
  <div>
   <h1>Book Swap</h1>
+  <a href="/">home</a>
   <% if logged_in? %>
-    <a href="/wishlists/<%= current_user.id %>">Wishlist</a>
-    <a href="/mybooks/<%= current_user.id %>">My Library</a>  
+    <a href="/wishlists/<%= current_user.id %>/">Wishlist</a>
+    <a href="/mybooks/<%= current_user.id %>">My Library</a>
     <form action="/session" method="post">
       <input type="hidden" name="_method" value="delete">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <button>logout</button>
     </form>
-    <p>Welcome, <%= current_user.name %></p>
+    <p>Welcome, <%= current_user.first_name %></p>
   <% else %>
     <form action="/session" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
       <label for="">email</label>
       <input type="text" name="email">
       <label for="">password</label>
       <input type="password" name="password">
       <button>login</button>
-      <a href="/register">Sign Up</a>
     </form>
+      <a href="/users/new">Sign Up</a>
   <% end %>
   </div>
 
 
 
     <%= yield %>
+    
   </body>
 </html>
