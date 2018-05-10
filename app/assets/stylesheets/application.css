@@ -20,37 +20,65 @@
 font-family: 'Raleway', sans-serif;
 font-family: 'Oswald', sans-serif; */
 
+*{
+    border: 1px lightgray solid;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+}
 nav{
     height: 123px;
-    margin: 0px 0px;
+    width: 100%;
+    margin: auto auto;
     background-color: mistyrose;
     background-image: url('images/nav_background.jpg');
     display: flex;
  }
 
- .nav_buttons{
-     text-align: right;
- }
-  nav a{
-    font-family: 'Anton', sans-serif;
-    font-size: 15px;
-    -webkit-box-shadow: 11px 11px 45px 0px rgba(0,0,0,0.39);
-    -moz-box-shadow: 11px 11px 45px 0px rgba(0,0,0,0.39);
-    box-shadow: 11px 11px 45px 0px rgba(0,0,0,0.39);
- }
-
  nav .title{
-     
+    margin-left: 10px;
+    line-height: 100px;
+    width: 40%;
 
+}
+
+nav .title a{
+    font-family: 'Anton', sans-serif;
+    font-size: 40px;
+    text-decoration-line: none;
+}
+
+nav .nav_buttons{
+    width: 60%; 
+    text-align: right;
+    padding-top: 40px;
+}
+
+nav .nav_buttons a{
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
  }
 
- nav a {
+ nav .nav_buttons a:hover{
+    color: red;
+}
 
+nav a{
+    text-shadow: 5px 5px 8px rgba(150, 150, 150, 0.45);
+    color: white;
  }
+
+nav label{
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+
+}
+
+ /* #book_swap_header{
+    font-family: 'Anton', sans-serif;
+    font-size: 40px;
+ } */
  
- nav a:hover{
-
- }
+ 
 
  nav a:visited{
 
