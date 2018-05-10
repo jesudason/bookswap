@@ -119,7 +119,7 @@
 			$resultsDiv.empty();
 			if ($searchBy = 'author') {
 				console.log($queryInput.val());
-				<%@books = Book.where(author: 'Roald Dahl') %>
+				<%@books = Book.where(author: %> + $queryInput.val() + <%) %>
 				console.log(<%@books.first.title%>);
 			}
 		});
