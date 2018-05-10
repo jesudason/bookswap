@@ -29,7 +29,7 @@
 	// Search hidden so user cannot search without stating if searching DB or Google
 	document.getElementById("search-form").style.display="none";
 
-	// lendBook search returns results from Google and gives the option to add to Database 
+	// googleBookSearch returns results from Google and gives the option to add to Database 
 	$('.googleBookSearch').on('click', function() {
 		document.getElementById("search-form").style.display="";
 		$queryInput.attr('placeholder', "Search Books to Add")
@@ -94,7 +94,7 @@
 		})
 	})
 
-	// borrowBook searches database to see if it's availble to borrow
+	// dbBookSearch returns books from the database, with a button to borrow.
 	$('.dbBookSearch').on('click', function() {
 		// display search bar
 		document.getElementById("search-form").style.display="";
@@ -103,7 +103,6 @@
 		var $searchBy = ''
 		$('#search-type').change(function(){
 			if ($(this).val() == 'author-search') {
-				console.log('<%=@books.last.title%>');
 				$searchBy = 'author';
 			} else if ($(this).val() == 'genre-search') {
 				$searchBy = 'genre';
@@ -115,13 +114,15 @@
 		})
 		// Perform search with above search type
 		$searchForm.on('submit', function(event) {
+			var $books = '';
 			event.preventDefault();
 			$resultsDiv.empty();
 			if ($searchBy = 'author') {
 				console.log($queryInput.val());
-				<%@books = Book.where(author: %> + $queryInput.val() + <%) %>
-				console.log(<%@books.first.title%>);
-			}
+				$queryInput.val() && <% @books = Book.where( author: "%> + $queryInput.val() + <% ")  %>
+				<% @books = Book.where( author: "Roald Dahl")  %>
+				console.log("<%= @books.first.title %>");
+			}	
 		});
 	});
 
