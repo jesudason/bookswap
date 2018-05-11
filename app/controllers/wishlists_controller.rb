@@ -5,7 +5,27 @@ class WishlistsController < ApplicationController
 	end
 
 	def show 
-		@my_wishlist = Wishlist.where(user_id: params[:id])
+		@wishlists = Wishlist.where(user_id: params[:id])
+	end
+
+	def create
+        @wishlist = Wishlist.new
+        @wishlist.user_id = params[:user_id]
+        @wishlist.isbn_id = params[:isbn_id]
+        @wishlist.title = params[:title]
+        @wishlist.author = params[:author]
+        @wishlist.image_url = params[:image_url]
+        @wishlist.save
+
+
+        if @wishlist.save
+            redirect_to("/wishlists/#{@wishlist.user_id}")
+        else
+            @errors = @wishlist.errors.full_messages
+            raise 'error'
+            redirect_to("/")
+        end
+
 	end
 
 	def destroy

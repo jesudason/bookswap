@@ -1,12 +1,11 @@
 <div class="book-info">
-<h1 class="title"></h1>
-<p class="author"></p>
-<%= 'ISBN: ' + @isbn %><br>
-<p class="year"></p>
-<img class="poster" src="">
-<p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore necessitatibus dolore impedit illum minus qui! Odit sequi ab hic reprehenderit deleniti, libero sint, error velit autem, obcaecati commodi voluptas iste?</p>
+    <h1 class="booktitle"><%= @book.title %></h1>
+    <p class="author"><%= @book.author %></p>
+    <p>ISBN: <%= @book.isbn_id %><br>
+    <!-- <p class="year"></p> -->
+    <img class="poster" src="<%= @book.image_url %>">
+    <p class="description"><%= @book.plot %></p>
 </div>
-
 
 <h1 class="critic_reviews">Critic Reviews</h1>
 <div class="reviews">
@@ -14,41 +13,48 @@
 </div>
 <p class="rating"></p>
 
-<button>Borrow</button>
-<button>Add to Wishlist</button>
-
+<button class="reqToBorrow">Borrow</button>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script>
+$('.reqToBorrow').on('click', function() {
+    <% if logged_in? %>
+        $(location).attr('href', "mailto:<%= @user.email%>?subject="
+            + encodeURIComponent("Request to borrow <%= @book.title %> by <%= @book.author%>")
+            + "&body=" 
+            + encodeURIComponent("Hi <%= @user.first_name%>, I would love to borrow your copy of <%= @book.title %>. \n Let me know how you'd like to proceed. \n Regards, <%= current_user.first_name %>"));
+    <% else %>
+        alert('you need to be logged in to borrow a book')
+    <% end %>
+});
 
 var options =  {
 		url: 'https://www.googleapis.com/books/v1/volumes?q=isbn:<%= @isbn %>&key=AIzaSyCb3xZRndlaQt34LVdpUYU6nHwvNTfb4K0'
 	}
 
-        console.log(options)		
+        // console.log(options)		
 
-var showResults = function(res) {
-    console.log(res)
-    console.log(res.items[0].volumeInfo.authors)
-    document.querySelector('.title').textContent = res.items[0].volumeInfo.title;
-    console.log(res.items[0].volumeInfo.title)
-    document.querySelector('.author').textContent = res.items[0].volumeInfo.authors;
-    document.querySelector('.year').textContent = res.items[0].volumeInfo.publishedDate;
-    document.querySelector('.description').textContent = res.items[0].volumeInfo.description;
-    document.querySelector('.poster').src = res.items[0].volumeInfo.imageLinks.thumbnail;
+// var showResults = function(res) {
+//     console.log(res)
+//     console.log(res.items[0].volumeInfo.authors)
+//     document.querySelector('.booktitle').textContent = res.items[0].volumeInfo.title;
+//     console.log(res.items[0].volumeInfo.title)
+//     document.querySelector('.author').textContent = res.items[0].volumeInfo.authors;
+//     document.querySelector('.year').textContent = res.items[0].volumeInfo.publishedDate;
+//     document.querySelector('.description').textContent = res.items[0].volumeInfo.description;
+//     document.querySelector('.poster').src = res.items[0].volumeInfo.imageLinks.thumbnail;
 
+// }
 
-}
-
-$.ajax(options).done(showResults);
+// $.ajax(options).done(showResults);
 
 var options = {
-    url: "http://idreambooks.com/api/books/reviews.json?q=0062502182&key=30f1b909406671dd6bfb87471ad75eff8ca9bf3a"
+    url: "http://idreambooks.com/api/books/reviews.json?q=" + <%=@book.isbn_id%> + "&key=30f1b909406671dd6bfb87471ad75eff8ca9bf3a"
 }
 
 var showResults = function(res) {
     var reviews = res.book.critic_reviews;
-    // console.log('r', reviews)
+    console.log('r', reviews)
     
     for(var x = 0; x < reviews.length; x++) {
         console.log(reviews[x].snippet)
@@ -61,7 +67,7 @@ var showResults = function(res) {
     }
     document.querySelector('.critic_reviews')
     document.querySelector('.rating').textContent = "Star rating: " + res.book.critic_reviews[0].star_rating;
-    console.log(res.book.critic_reviews[0].star_rating)
+    // console.log(res.book.critic_reviews[0].star_rating)
 }
 
 $.ajax(options).done(showResults);

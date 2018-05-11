@@ -16,11 +16,17 @@
 	<section>
 		<% @books.each do |book| %>
 			<div>
-				<h2><%= book.title %></h2>
+				<h2><a href="/books/<%= book.id %>"> <%= book.title %></a></h2>
 				<h3><%= book.isbn_id %></h3>
 				<h3><%= book.author %></h3>
 				<a href="/books/<%= book.id %>"><img src="<%= book.image_url %>"></a>
 			</div>
+
+			<form action="/mybooks/<%= book.id %>" method="post">
+		    	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		    	<input type="hidden" name="_method" value="delete">
+		    	<button>Remove from My Library</button>
+			</form>
 		<% end %>	
 	</section>
 </section>

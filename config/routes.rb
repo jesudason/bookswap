@@ -23,5 +23,6 @@ Rails.application.routes.draw do
   delete '/session', to: 'session#destroy'
   get '/api/books', to: 'books#list_of_books'
   get '/:id/mybooks', to: 'mybooks#index'
+  get '/:id/wishlists', to: 'wishlists#show'
 
 end

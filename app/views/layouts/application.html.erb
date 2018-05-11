@@ -22,7 +22,7 @@
       
         <% if logged_in? %>
           <a href="/wishlists/<%= current_user.id %>/">Wishlist</a>
-          <a href="/mybooks/<%= current_user.id %>">My Library</a>
+          <a href="/<%= current_user.id %>/mybooks">My Library</a>
           <form action="/session" method="post">
             <input type="hidden" name="_method" value="delete">
             <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
