@@ -77,8 +77,46 @@
 					var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
 					var $img = $('<img >')
 						.attr('src', book.volumeInfo.imageLinks.thumbnail);
+
 					var $wishlistForm = $('<form>')
-						.attr('action', "/<%= current_user.username %>/wishlists")						
+						.attr('action', "/wishlists/")
+						.attr('method', "post")
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "authenticity_token")
+						.attr('value', "<%= form_authenticity_token %>"))
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "isbn_id")
+						.attr('value', book.volumeInfo.industryIdentifiers[1].identifier))
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "title")
+						.attr('value', book.volumeInfo.title))
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "author")
+						.attr('value', book.volumeInfo.authors[0]))	
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "plot")
+						.attr('value', book.volumeInfo.description))
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "image_url")
+						.attr('value', book.volumeInfo.imageLinks.thumbnail))
+
+					$wishlistForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "user_id")
+						.attr('value',<%= current_user.id %>))	
+
 					var $addToWishlist = $('<button>')
 						.attr('class', 'addToWishlist')
 						.text('add to wishlist');

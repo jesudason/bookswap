@@ -1,12 +1,12 @@
-<% @my_wishlist.each do |wishlist| %>
-<h1><%= wishlist.book.title %></h1>
-<h2><%= wishlist.book.author %></h2>
-<img src="https://slack-imgs.com/?c=1&url=https%3A%2F%2Fpicsum.photos%2F100%2F100">
-<p><%= wishlist.book.plot %></p>
-<p><%= wishlist.book.genre %></p>
-<form action="/wishlists/<%= wishlist.id %>" method="post">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <input type="hidden" name="_method" value="delete">
-    <button>Remove from My WishList</button>
-</form>
+<% @wishlists.each do |wishlist| %>
+	<h1><%= wishlist.title %></h1>
+	<h3><%= wishlist.isbn_id %></h3>
+	<h2><%= wishlist.author %></h2>
+	<img src="<%= wishlist.image_url %>">
+
+	<form action="/wishlists/<%= wishlist.id %>" method="post">
+	    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	    <input type="hidden" name="_method" value="delete">
+	    <button>Remove from My WishList</button>
+	</form>
 <% end %>

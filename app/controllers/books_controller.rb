@@ -6,6 +6,13 @@ class BooksController < ApplicationController
         @isbn = params[:isbn_id]
     end
 
+    def show
+        @book = Book.find(params[:id])
+        @user = User.find(@book.user_id)
+        # redirect_to '/books/index'
+        render :index
+    end
+
 
     def list_of_books
     	@books = Book.where("#{params[:category]} = '#{params[:search]}'").limit(10)
