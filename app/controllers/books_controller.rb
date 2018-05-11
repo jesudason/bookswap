@@ -25,7 +25,8 @@ class BooksController < ApplicationController
         @book.save
 
         if @book.save
-            redirect_to('/params[:user_id]/mybooks')
+            redirect_to("/#{@book.user_id}/mybooks")
+            # raise 'error'
         else
             @errors = @book.errors.full_messages
             render :new

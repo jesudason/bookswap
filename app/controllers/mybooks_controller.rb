@@ -1,7 +1,7 @@
 class MybooksController < ApplicationController
 
 	def index
-		@user = User.find_by(username: params[:username])
+		@user = User.find_by(id: params[:id])
 		@books = Book.where(user_id: @user.id)
 
 	end
