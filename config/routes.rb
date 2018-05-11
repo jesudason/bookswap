@@ -22,5 +22,6 @@ Rails.application.routes.draw do
   post '/session', to: 'session#create'
   delete '/session', to: 'session#destroy'
   get '/api/books', to: 'books#list_of_books'
+  get '/:id/mybooks', to: 'mybooks#index'
 
 end

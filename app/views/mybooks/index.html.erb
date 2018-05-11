@@ -1,0 +1,26 @@
+<section>
+	<h1><%= @user.username %>'s Library</h1>
+
+		<% if logged_in? && current_user.id == @user.id %>
+			<form action="/users/edit" method="post">
+			<input type="hidden" name="_method" value="put">
+				<h2>User Profile</h2>
+				<p>Name: <%= @user.first_name @user.last_name %></p>
+				<p>Address: <%= @user.address @user.suburb $ user.country %></p>
+				<p>Phone Number: <%= @user.phone %></p>
+				<button>Update Profile</button>
+			</form>
+			<a href="/profile/<%= @user.username %>/edit"></a>
+		<% end %>
+
+	<section>
+		<% @books.each do |book| %>
+			<div>
+				<h2><%= book.name %></h2>
+				<h3><%= book.isbn_id %></h3>
+				<h3><%= book.author %></h3>
+				<a href="/books/<%= book.id %>"><img src="<%= book.image_url %>"></a>
+			</div>
+		<% end %>	
+	</section>
+</section>

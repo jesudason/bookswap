@@ -1,4 +1,3 @@
-
 <div>
 	<% if logged_in? %>
 		<label>Add a book to your Library or Wishlist:</label>
@@ -22,7 +21,8 @@
 	<button>Search</button>
 </form>
 
-<div class="results"></div>
+<div class="results">
+</div>
 
 <script>
 	var $searchForm = $('#search-form');
@@ -60,13 +60,12 @@
 
 			var showResults = function(res) {	
 				res.items.slice(0,20).forEach(function(book) {
-					var $form = $('<form>')
-						.attr('action', '/books/' + book.volumeInfo.title)
+
+					console.log(book.volumeInfo)
 					var $h3 = $('<h3>').addClass('title');
 					var $a = $('<a>')
 						.text(book.volumeInfo.title);
 					$h3.append($a);
-					console.log(book.volumeInfo)
 					var $h5 = $('<h5>').text("ISBN_13: " + book.volumeInfo.industryIdentifiers[1].identifier)
 					var $h4 = $('<h4>').text(book.volumeInfo.description);
 					$resultsDiv.append($h3).append($h5).append($h4);
@@ -77,35 +76,73 @@
 					var $p = $('<p>').text("Date of Publication: " + book.volumeInfo.publishedDate);
 					var $img = $('<img >')
 						.attr('src', book.volumeInfo.imageLinks.thumbnail);
+					var $wishlistForm = $('<form>')
+						.attr('action', "/<%= current_user.username %>/wishlists")						
 					var $addToWishlist = $('<button>')
 						.attr('class', 'addToWishlist')
 						.text('add to wishlist');
-						$('.addToWishlist').on('click', function() {
-							console.log('test add to wishlist');
-						})
+
+					var $libraryForm = $('<form>')
+						.attr('action', "/books")
+						.attr('method', "post")
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "authenticity_token")
+						.attr('value', "<%= form_authenticity_token %>"))
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "isbn_id")
+						.attr('value', book.volumeInfo.industryIdentifiers[1].identifier))
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "title")
+						.attr('value', book.volumeInfo.title))
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "author")
+						.attr('value', book.volumeInfo.authors[0]))	
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "plot")
+						.attr('value', book.volumeInfo.description))
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "image_url")
+						.attr('value', book.volumeInfo.imageLinks.thumbnail))
+
+					$libraryForm.append($('<input>')
+						.attr('type', "hidden")
+						.attr('name', "user_id")
+						.attr('value',<%= current_user.id %>))													
 					var $addToLibrary = $('<button>')
-						.attr('class', 'addToLibrary')
-						// .attr('target', '_blank')
-						// .attr('href', "/mybooks/#{book.volumeInfo.title}")				
+						.attr('class', 'addToLibrary')			
 						.text('add to Library');
-						$('.addToLibrary').on('click', function(event) {
-							console.log(event.currentTarget);
-						})				
-					$form.append($p).append($img).append($addToWishlist).append($addToLibrary);
-					$resultsDiv.append($form)
+
+
+		
+					$libraryForm.append($addToLibrary)
+					$wishlistForm.append($addToWishlist)		
+					$resultsDiv.append($p).append($img).append($wishlistForm).append($libraryForm);
+					// $resultsDiv.append($form)
 				});
 			}
 		$.ajax(options).done(showResults);
-		})
-	})
+		});
+	});
 
 	// dbBookSearch returns books from the database, with a button to borrow.
 	$('.dbBookSearch').on('click', function() {
 		// display search bar
 		document.getElementById("search-form").style.display="";
-		$queryInput.attr('placeholder', "Search Books to Borrow")
+		$queryInput.attr('placeholder', "Search Books to Borrow");
 		// Select search type
-		var $searchBy = 'title'
+		var $searchBy = 'title';
 		$('#search-type').change(function(){
 			if ($(this).val() == 'author-search') {
 				$searchBy = 'author';
@@ -131,7 +168,6 @@
 			}
 
 			var showResults = function(res) {
-			
 				res.forEach(function(book) {
 					var $form = $('<form>')
 						.attr('action', '/books/' + book.id)
@@ -154,22 +190,27 @@
 						.append($h4)
 						.append($img)
 						.append($reqToBorrow)
-					<% if logged_in? %>
 					$('.reqToBorrow').on('click', function() {
-						$(location).attr('href', 'mailto:' + book.user.email + '?subject='
-                            + encodeURIComponent("Request to borrow " + book.title + " by " + book.author)
-                            + "&body=" 
-                            + encodeURIComponent("Hi " + book.user.first_name + ", I would love to borrow your copy of " + book.title + ". \n Let me know how you'd like to proceed. \n Regards, <%= current_user.first_name %>"));
-                           });
-					})
-
-					<% end %>
-				}
-
+						<% if logged_in? %>
+							$(location).attr('href', 'mailto:' + book.user.email + '?subject='
+	                            + encodeURIComponent("Request to borrow " + book.title + " by " + book.author)
+	                            + "&body=" 
+	                            + encodeURIComponent("Hi " + book.user.first_name + ", I would love to borrow your copy of " + book.title + ". \n Let me know how you'd like to proceed. \n Regards, <%= current_user.first_name %>"));
+						<% else %>
+							alert('you need to be logged in to borrow a book')
+						<% end %>
+	                });
+				})
+			}
 		$.ajax(options).done(showResults);
-			});
+		})
 
-		});
+	});
+
+	$('.addToWishlist').on('click', function() {
+		event.preventDefault();
+		console.log('test wishlist')
+	})
 		
 
 </script>

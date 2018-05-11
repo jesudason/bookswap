@@ -13,4 +13,24 @@ class BooksController < ApplicationController
     	render json: @books, include: :user
     end
 
+
+    def create
+        @book = Book.new
+        @book.isbn_id = params[:isbn_id]
+        @book.title = params[:title]
+        @book.author = params[:author]
+        @book.image_url = params[:image_url]
+        @book.user_id = params[:user_id]
+        @book.plot = params[:plot]
+        @book.save
+
+        if @book.save
+            redirect_to('/params[:user_id]/mybooks')
+        else
+            @errors = @book.errors.full_messages
+            render :new
+        end
+
+    end 
+    
 end
