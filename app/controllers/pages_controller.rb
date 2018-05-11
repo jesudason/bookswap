@@ -5,16 +5,14 @@ class PagesController < ApplicationController
     end
 
     def map_markers
-
         current_location = [User.first.latd.to_f , User.first.long.to_f]
         search_radius_in_kms = 5000
 
-        isbn_number = "1250163307"
-        # google_api_search = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
-        book_details = google_api_search.search(isbn_number, 5)
-        
+        isbn_number = Book.first.isbn_id
         search_results = Book.where(isbn_id: isbn_number)
         
+              # google_api_search = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
+        # book_details = google_api_search.search(isbn_number, 5)
         
         @markers = []
 
