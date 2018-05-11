@@ -8,15 +8,37 @@ jQuery(function($) {
 
 function initialize() {
 
+//     var options =  {
+//         url: '/api/mapmarkers?isbn_id=978-1-891830-71-6'
+//     }
+
+//     $.ajax(options).done(function(result){
+//             renderMap(result)
+//     });    
+}
+
+
+function plotMap(search_param){
+
+    // jQuery(function($) {
+        // var script = document.createElement('script');
+        // script.src = "//maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk&callback=initialize";
+    
+        // document.body.appendChild(script);
+    // });
+
     var options =  {
-        url: '/api/mapmarkers'
+        // url: '/api/mapmarkers?search=' + search_param
+        url: '/api/mapmarkers?search=Matilda'
     }
+
+    console.log(options)
 
     $.ajax(options).done(function(result){
             renderMap(result)
     });    
+    
 }
-
 
 function renderMap(markers){
     var map;
@@ -62,7 +84,7 @@ function infoWindowContent(marker){
    
     var content =  
     '<div class="info_content">' +
-        '<h3>'+ marker[0] +'</h3>' +
+        '<h3>'+ marker[6] +' (' + marker[0] +')</h3>' +
         '<div class="content_wrapper">' +
             '<img src="'+ marker[3] +'">' +
             '<p class="description">'+ marker[4] + '<br><a href="/books?isbn_id=' + marker[5]+ '">More...</a>' +'</p>' + 
