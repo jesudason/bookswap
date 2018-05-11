@@ -5,13 +5,16 @@ class WishlistsController < ApplicationController
 	end
 
 	def show 
-		@my_wishlist = Wishlist.where(user_id: 75)
+		@my_wishlist = Wishlist.where(user_id: params[:id])
 	end
 
 	def destroy
-		my_wishlist = Wishlist.where(params[:user_id])
+		
+		# @user.id = 78
+		my_wishlist = Wishlist.find_by(id: params[:id])
+		user_id = my_wishlist.user_id
 		my_wishlist.destroy
-		redirect_to ("/wishlist/'#{ user_id }'")
+		redirect_to ("/wishlists/#{user_id}")
 	end
 
 

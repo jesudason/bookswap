@@ -2,14 +2,13 @@
 <p>don't think show is the right page for this as it usually applied to one item (dish, user etc) - suggest redirect to wishlists/:id or wishlists/username</p>
 
 <% @my_wishlist.each do |wishlist| %>
-<li><%= wishlist.book.title %></li>
-<p><%= wishlist.book.author %></p>
+<h1><%= wishlist.book.title %></h1>
+<h2><%= wishlist.book.author %></h2>
 <p><%= wishlist.book.plot %></p>
 <p><%= wishlist.book.genre %></p>
-<form action="/wishlist<%= @my_wishlist_id %>" method="post">
+<form action="/wishlists/<%= wishlist.id %>" method="post">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type="hidden" name="_method" value="delete">
     <button>Remove from My WishList</button>
 </form>
-<button>Borrow</button>
 <% end %>
