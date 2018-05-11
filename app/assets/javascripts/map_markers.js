@@ -28,8 +28,8 @@ function plotMap(search_param){
     // });
 
     var options =  {
-        // url: '/api/mapmarkers?search=' + search_param
-        url: '/api/mapmarkers?search=Matilda'
+        url: '/api/mapmarkers?search=' + search_param
+        // url: '/api/mapmarkers?search=Matilda'
     }
 
     console.log(options)
