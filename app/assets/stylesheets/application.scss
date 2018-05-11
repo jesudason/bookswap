@@ -27,11 +27,6 @@ nav{
     height: 123px;
     width: 100%;
     margin: auto auto;
-    /* background-color: mistyrose; */
-    /* background-image: image-url("nav_background.jpg"); */
-    /* background-image: url(image-path("nav_background.jpg")); */
-    /* background-image: url('images/nav_background.jpg'); */
-    /* background-image: url(<%= asset_path(nav_background.jpg") %>);  */
     background-image: asset-url('images/nav_background.jpg');
 
     display: flex;
