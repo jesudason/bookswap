@@ -2,15 +2,15 @@
 	<h1><%= @user.username %>'s Library</h1>
 
 		<% if logged_in? && current_user.id == @user.id %>
-			<form action="/users/edit" method="post">
+			<form action="/users/<%=current_user.id%>/edit" method="post">
 			<input type="hidden" name="_method" value="put">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 				<h2>User Profile</h2>
 				<p>Name: <%= @user.first_name%> <%= @user.last_name%> </p>
 				<p>Address: <%= @user.address %>, <%= @user.suburb %>, <%= @user.country %></p>
 				<p>Phone Number: <%= @user.phone %></p>
-				<button>Update Profile</button>
 			</form>
-			<a href="/profile/<%= @user.username %>/edit"></a>
+			<a href="/users/<%= @user.id %>/edit">Edit</a>
 		<% end %>
 
 	<section>
