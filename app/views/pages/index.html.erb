@@ -33,6 +33,7 @@
 	document.getElementById("search-form").style.display="none";
 
 	// googleBookSearch returns results from Google and gives the option to add to Database 
+	<% if logged_in? %>
 	$('.googleBookSearch').on('click', function() {
 		document.getElementById("search-form").style.display="";
 		$queryInput.attr('placeholder', "Search Books to Add")
@@ -57,7 +58,7 @@
 			var options = {
 				url: urlprefix + $queryInput.val() +'&apikey=2f6435d9'
 			}
-
+			
 			var showResults = function(res) {	
 				res.items.slice(0,20).forEach(function(book) {
 
@@ -132,9 +133,11 @@
 					// $resultsDiv.append($form)
 				});
 			}
+
 		$.ajax(options).done(showResults);
 		});
 	});
+	<% end %>
 
 	// dbBookSearch returns books from the database, with a button to borrow.
 	$('.dbBookSearch').on('click', function() {
