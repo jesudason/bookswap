@@ -17,6 +17,8 @@ User.destroy_all
 
 isbn_numbers = File.read(Rails.root.join('db', 'ISBN_numbers.csv')).split(',')
 aus_locations = File.read(Rails.root.join('db', 'aus_locations.csv')).split(/\r/)
+titles = ["batman", "matilda", "flowers","cats","dogs","rainy day","the australian", "apple", "mango", 
+"javascript", "ruby", "html", "web development","finding a job", "last second project kaos"]
 
 
 20.times{

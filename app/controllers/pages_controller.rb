@@ -1,38 +1,47 @@
 class PagesController < ApplicationController
 
+    $book_isbn_arr = "978-1-891830-71-6"
+
     def index
         @books = Book.all
     end
 
+    def get_book_isbn
+        $book_isbn_arr = params[:ids]
+        # redirect_to('/api/mapmarkers')
+    end
+
     def map_markers
+        search = params[:search]
+
         current_location = [User.first.latd.to_f , User.first.long.to_f]
         search_radius_in_kms = 5000
 
-        isbn_number = Book.first.isbn_id
-        search_results = Book.where(isbn_id: isbn_number)
-        
-              # google_api_search = GoogleBook::Book.new(:api_key => "AIzaSyBTrzql0pdZs-GLtUTuhqjRXjpCRwLU8sk")
-        # book_details = google_api_search.search(isbn_number, 5)
-        
+        search_results = Book.where(title: search)
+                
         @markers = []
 
         search_results.each do |book|
             book_search_results = []
             book_location = [book.user.latd.to_f, book.user.long.to_f ]
             username = book.user.username
+            isbn_number = book.isbn_id
+            title = book.title
             description = Faker::Lorem.paragraph
 
             image = "http://via.placeholder.com/50x50"
             distance_from_me = distance(current_location, book_location).to_i/1000
             
             if distance_from_me < search_radius_in_kms
-                book_search_results += [username, book_location[0], book_location[1], image, description, isbn_number]
+                book_search_results += [username, book_location[0], book_location[1], image, description, isbn_number, title]
                 @markers.push(book_search_results)
             end
         end
 
         render json: @markers
     end
+
+
 
 
     def view_map
